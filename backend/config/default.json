@@ -1,0 +1,4 @@
+{
+    "mongoURI": "mongodb+srv://oyasumimizi:blackpink@cluster0.tazvv.mongodb.net/Cluster0?retryWrites=true&w=majority",
+    "jwtSecret": "JWT SECRET HERE"
+}
