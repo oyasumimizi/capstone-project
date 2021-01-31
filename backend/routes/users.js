@@ -1,13 +1,31 @@
-const { required } = require("joi");
-
 const {User, validateUser} = require ('../models/user.js');
 const bcrypt = require ('bcrypt');
 const config = require('config');
 const jwt = require('jsonwebtoken');
 const express = require('express');
-const { required } = require('joi');
 const router = express.Router;
 
+//get users
+router.get("/", async (req, res) => {
+    try {
+        const users = await User.find();
+        return res.send(users);
+    } catch (ex) {
+        return res.status(500).send(`Internal server Error: ${ex}`);
+    }
+});
+
+//get a user
+router.get("/:userId", async (req, res) => {
+    try {
+        const user = await User.findById(req.params.userId);
+        return res.send(user);
+    } catch (ex) {
+        return res.status(500).send(`Internal server Error: ${ex}`);
+    }
+});
+
+//new user
 router.post('/', async (req, res) => {
     try{
         const{ error } = validateUser(req.body);

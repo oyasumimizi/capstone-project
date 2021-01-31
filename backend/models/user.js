@@ -8,10 +8,13 @@ const userSchema = new mongoose.Schema({
     name: { type: String, required: true, minlength: 5, maxlength: 50},
     email: {type: String, unique: true, required: true, minlength: 5, maxlength: 255},
     password: {type: String, required: true, maxlength: 1024, minlength: 5},
-    // shoppingCart: {type: [productSchema], default:[]},
 });
 
 const User = mongoose.model('User', userSchema);
+
+userSchema.methods.generateAuthToken = function () {
+    return jwt.sign({_id: this._id, name: this.name, isAdmin: this.isAdmin}, config.get('jwtSecret'));
+};
 
 function validateUser(user){
     const schema = Joi.object({
@@ -25,3 +28,4 @@ function validateUser(user){
 
 exports.User = User;
 exports.validateUser = validateUser;
+exports.userSchema = userSchema;
