@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta
+      charset="UTF-8"
+      <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0"
+    />
+    <title>All Products</title>
+    <link
+      rel="stylesheet"
+      href="frontpage.css"
+      <link
+      rel="preconnect"
+      href="https://fonts.gstatic.com"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Hind:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
+    />
+  </head>
+  <body>
+    <div class="header">
+      <div class="container">
+        <div class="navbar">
+          <div class="logo">
+            <!-- <img src="images/logo.png" alt="125px"> -->
+          </div>
+          <nav>
+            <ul id="MenuItems">
+              <li><a href="">Home</a></li>
+              <li><a href="">Products</a></li>
+              <li><a href="">About</a></li>
+              <li><a href="">Contact</a></li>
+              <li><a href="">Account</a></li>
+            </ul>
+          </nav>
+          <!-- <img src="images/cart.png" width="30px" height="30px"> -->
+          <!-- <img src="images/menu.png" class="menu-icon" onClick="menuToggle()" -->
+        </div>
+      </div>
+<!-- single product details-->
+
+      <div class="small-container single-product">
+          <div class="row">
+              <div class="col-2"></div>
+                    <img src="images/product" width="100%" id="product-img">
+                    <div class="small-img-row">
+                        <div class="small-img-col">
+                            <img src="images/product" width="100%" class="small-img">
+                        </div>
+                        <div class="small-img-col">
+                            <img src="images/product" width="100%" class="small-img">
+                        </div>
+                        <div class="small-img-col">
+                            <img src="images/product" width="100%" class="small-img">
+                        </div>
+                        <div class="small-img-col">
+                            <img src="images/product" width="100%" class="small-img">
+                        </div>
+                    </div>
+
+          </div>
+          <div class="col-2">
+              <h1>[name of item]</h1>>
+              <h4>[price]</h4>
+              <select>
+                  <option> Quantity </option>
+                  <option> 1 </option>
+                  <option> 2 </option>
+                  <option> 3 </option>
+              </select>
+              <a href="" class="button">Add To Cart</a>
+              <h3>Product Details <i class="fa fa-indent"></i></h3>
+              <br>
+              <p>[small description of item]</p>
+          </div>
+    </div>
+      </div>
+      --title
+      <div class="small-container">
+          <div class="row row-2">
+              <h2>Related Products</h2>
+              <p>View more</p>
+          </div>
+      </div>
+      --products
+      <div class="small-container">
+    
+        <div class="row">
+          <div class="col-4">
+            <!-- <img src="images/item" alt=""> -->
+            <!-- <h4>Product Name</h4> -->
+            <div class="rating"></div>
+            <i class="fa fa-star"></i>
+            <i class="fa fa-star"></i>
+            <i class="fa fa-star"></i>
+            <i class="fa fa-star"></i>
+            <i class="fa fa-star-o"></i>
+        </div>
+            <!-- <p>Price of item</p> -->
+        </div>
+        </div>
+        <!-- add more products here-->
+
+        </div>
+      </div>
+      <script>
+        let menuItems = document.getElementById("menuItems")
+        menuItems.style.maxHeight = "0px";
+        function menuToggle(){
+            if(menuItems.style.maxHeight == "0px")
+            {
+                menuItems.style.maxHeight = "200px";
+            }
+            else{
+                menuItems.style.maxHeight = "0px";
+            }
+        }
+    </script>
+
+    <script>
+        let productImg = document.getElementById("productImg");
+        let smallImg = document.getElementsByClassName("small-img");
+            smallImg[0].onClick = function(){
+                productImg.src = smallImg[0].src;
+            }
+            smallImg[1].onClick = function(){
+                productImg.src = smallImg[1].src;
+            }
+            smallImg[2].onClick = function(){
+                productImg.src = smallImg[2].src;
+            }
+            smallImg[3].onClick = function(){
+                productImg.src = smallImg[3].src;
+            }
+            smallImg[4].onClick = function(){
+                productImg.src = smallImg[4].src;
+            }
+    </script>
+  </body>
+</html>
