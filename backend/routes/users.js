@@ -2,8 +2,9 @@ const {User, validateUser} = require ('../models/user.js');
 const bcrypt = require ('bcrypt');
 const config = require('config');
 const jwt = require('jsonwebtoken');
+const auth = require('../middleware/auth');
 const express = require('express');
-const router = express.Router;
+const router = express.Router();
 
 //get users
 router.get("/", async (req, res) => {
@@ -26,11 +27,12 @@ router.get("/:userId", async (req, res) => {
 });
 
 //new user
-router.post('/', async (req, res) => {
+    router.post('/login', async (req, res) => {
     try{
         const{ error } = validateUser(req.body);
 
-        if (error) return res.status(400).send(error.details[0].message);
+        if (error)
+         return res.status(500).send(error.details[0].message);
 
         let user = await User.findOne({ email: req.body.email });
         if (user) return res.status(400).send('User already registered.');
@@ -53,8 +55,9 @@ router.post('/', async (req, res) => {
         .header('x-auth-token', token)
         .header('access-control-expose-headers', 'x-auth-token')
         .send({ _id: user._id, name: user.name, email: user.email});
+    } catch (ex) {
+        return res.status(500).send(`InternalServerError:${ex}`);
     }
-}
 });
 
  module.exports = router;

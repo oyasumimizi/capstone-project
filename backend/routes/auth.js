@@ -5,7 +5,6 @@ const config = require('config');
 const jwt = require('jsonwebtoken');
 const router = express.Router();
 
-
 router.post('/login', async (req, res) => {
     try{
         const { error } = validateLogin(req.body);

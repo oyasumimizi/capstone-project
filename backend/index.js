@@ -1,17 +1,20 @@
-const Joi = require('joi');
-const bcrypt = require('bcrypt');
+require("dotenv").config();
 const connectDB = require('./startup/db');
 const express = require('express');
 const app = express();
-const User = require('./models/user.js');
-const router = express.router;
 const mongoose = require('mongoose')
+const users = require('./routes/users');
 const cors = require('cors');
+const bodyParser = require('body-parser');
 const validate = require('./routes/auth');
+const productRoutes = require('./routes/productRoutes');
 
+app.use(bodyParser.json());
 app.use(cors());
 app.use(express.json());
-app.use('/api/user', validate);
+app.use('/api/user', users);
+app.use('/api/validate', validate)
+app.use("/api/products", productRoutes);
 
 var port = process.env.PORT || '5000'
 app.listen(port, err => {
