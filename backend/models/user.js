@@ -3,12 +3,14 @@ const Joi = require('joi');
 const cors = require('cors');
 const config = require('config');
 const jwt = require('jsonwebtoken');
+const { productSchema } = require('./Product');
 
 const userSchema = new mongoose.Schema({
     name: { type: String, required: true, minlength: 5, maxlength: 50},
     email: {type: String, unique: true, required: true, minlength: 5, maxlength: 255},
     password: {type: String, required: true, maxlength: 1024, minlength: 5},
-    timestamp: { type: Date, default: Date.now() }
+    timestamp: { type: Date, default: Date.now() },
+    shoppingCart: {type: [productSchema], default: []}
 });
 
 const User = mongoose.model('User', userSchema);
