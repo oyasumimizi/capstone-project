@@ -19,7 +19,7 @@ const StarRating = () => {
              onClick={() => setRating(ratingValue)}
              />
             <FaStar className="star" 
-            color={ratingValue < (hover || rating) ? "#FDFD96" : "#B2B2B2"}
+            color={ratingValue < (hover || rating) ? "#F3DE8F" : "#B2B2B2"}
              size={20}
              onMouseEnter={() => setHover(ratingValue)}
              OnMouseLeave={() => setHover(null)}
