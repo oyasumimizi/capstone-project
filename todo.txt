@@ -1,0 +1,10 @@
+(2.5 points) As an unregistered or registered user, I want to see a brief explanation box that tells me the purpose of the website.
+(5 points) As an unregistered user, I want to be able to make an account by filling out a form that includes a name box, email box, and password box and then login to the account.
+(7.5 points) As an artwork seller, I want to be able to make a post that allows me to upload an image of my artwork, set a sale price for it, and includes tags to better describe the art i.e. portrait, landscape, etc.
+(5 points) As a customer, I want to be able to filter artwork by tag, name, price. 
+(5 points) As a customer, I want to see view all artwork available for sale.
+(7.5 points) As a customer, I want to be able to rate an artwork as well as see an average rating of that artwork.
+(5 points) As a customer, I want to leave a review of the artwork.
+(5 points) As a customer, I want to be able to click on another person’s artwork and be taken to a details page of that artwork, which will display, artist name, sale price, tags, average rating
+(7.5 points) As a customer, I want to be able to add an item to my cart.
+(5 points) As a customer, I want to be able to see the artwork in my cart.
