@@ -15,7 +15,6 @@ app.use(express.json());
 app.use('/api/user', users);
 app.use('/api/validate', validate)
 app.use("/api/products", products);
-app.use("/api/upload", )
 //endpoint to login is /user/login
 
 var port = process.env.PORT || '5000'
