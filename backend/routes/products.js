@@ -2,6 +2,8 @@ const mongoose = require('mongoose');
 // const {Product, validate} = require('../models/product');
 const express = require("express");
 const router = express.Router();
+const multer = require("multer");
+const upload = multer({dest: '/uploads/'});
 
 router.get('/:itemId', async (req, res) =>{
   try{
@@ -15,13 +17,14 @@ router.get('/:itemId', async (req, res) =>{
   }
 });
 
-router.post('/', async (req, res) => {
+router.post('/', upload.single('productImage'), async (req, res) => {
   try{
     const {error} = validate(req.body);
     if(error)
       return res.status(400).send(error);
-
+      console.log(req.file);
       const product = new product({
+        productId: req.body.id,
         itemName: req.body.itemName,
         description: req.body.description,
         price: req.body.price,

@@ -1,12 +1,12 @@
-// // const products = [
-// //     {
-// //       name: ""
-// //       imageUrl:
-// //         "",
-// //       description:
-// //         "",
-// //       price: ,
-// //       countInStock: ,
-// //     },
+const products = [
+    {
+      name: ""
+      imageUrl:
+        "",
+      description:
+        "",
+      price: ,
+      countInStock: ,
+    },
 
-// module.exports = products;
+module.exports = products;
