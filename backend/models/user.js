@@ -11,9 +11,10 @@ const userSchema = new mongoose.Schema({
     email: {type: String, unique: true, required: true, minlength: 5, maxlength: 255},
     password: {type: String, required: true, maxlength: 1024, minlength: 5},
     timestamp: { type: Date, default: Date.now() },
-    shoppingCart: {type: [productSchema], default: []},
+    cart: {type: [productSchema], default: []},
     newSalePost: {type: [productSchema], default: []},
-    review: {type: [reviewSchema], default: []}
+    review: {type: [reviewSchema], default: []},
+    image: {type: String, required: true}
 });
 
 const User = mongoose.model('User', userSchema);
