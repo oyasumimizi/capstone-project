@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import Dropzone from "react-dropzone";
 import { Icon } from "antd";
 import Axios from "axios";
+
 function FileUpload(props) {
   const [Images, setImages] = useState([]);
 
@@ -17,7 +18,7 @@ function FileUpload(props) {
           setImages([...Images, response.data.image]);
           props.refreshFunction([...Images, response.data.image]);
         } else {
-          alert("Failed to save the Image in Server");
+          alert("Failed to save the image to the server.");
         }
       }
     );
