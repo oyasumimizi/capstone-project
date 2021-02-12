@@ -135,7 +135,7 @@ function LandingPage() {
       <div style={{ textAlign: "center" }}>
         <h2>
           {" "}
-          Let's Travel Anywhere <Icon type="rocket" />{" "}
+         <Icon type="rocket" />{" "}
         </h2>
       </div>
 
