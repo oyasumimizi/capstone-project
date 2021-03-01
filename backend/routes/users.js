@@ -1,4 +1,4 @@
-const { User, validateUser } = require("../models/user.js");
+const { User, userSchema, user, validateUser } = require("../models/user.js");
 const bcrypt = require("bcrypt");
 const config = require("config");
 const jwt = require("jsonwebtoken");
@@ -74,16 +74,18 @@ router.get("/auth", auth, (req, res) => {
 });
 
 router.post("/login", (req, res) => {
-  User.findOne({ email: req.body.email }, (err, user) => {
+  User.findOne({ email: req.body.email }, (err, user)=> {
     if (!user)
       return res.json({
         loginSuccess: false,
         message: "Auth failed, email not found",
       });
-
+    });
+  });
+    
     user.comparePassword(req.body.password, (err, isMatch) => {
       if (!isMatch)
-        return res.json({ loginSuccess: false, message: "Wrong password" });
+        return res.json({ loginSuccess: false, message: "Wrong password" });   
 
       user.generateToken((err, user) => {
         if (err) return res.status(400).send(err);
@@ -94,8 +96,6 @@ router.post("/login", (req, res) => {
         });
       });
     });
-  });
-});
 
 router.get("/logout", auth, (req, res) => {
   User.findOneAndUpdate(
@@ -109,6 +109,7 @@ router.get("/logout", auth, (req, res) => {
     }
   );
 });
+
 
 router.get("/addToCart", auth, (req, res) => {
   User.findOne({ _id: req.user._id }, (err, userInfo) => {
@@ -233,17 +234,10 @@ router.post("/successBuy", auth, (req, res) => {
       payment.save((err, doc) => {
         if (err) return res.json({ success: false, err });
 
-        //item will increase by 1 if sold
-
-        //per item sold 
-
         let products = [];
         doc.product.forEach((item) => {
           products.push({ id: item.id, quantity: item.quantity });
         });
-
-        // first Item    quantity 2
-        // second Item  quantity 3
 
         async.eachSeries(
           products,
@@ -282,3 +276,4 @@ router.get("/getHistory", auth, (req, res) => {
 });
 
 module.exports = router;
+

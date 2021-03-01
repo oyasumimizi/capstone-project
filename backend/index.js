@@ -6,12 +6,14 @@ const mongoose = require('mongoose')
 const users = require('./routes/users');
 const cors = require('cors');
 const bodyParser = require('body-parser');
+const cookieParser = require("cookie-parser");
 const validate = require('./routes/auth');
 const products = require('./routes/products');
 
 app.use(bodyParser.json());
 app.use(cors());
 app.use(express.json());
+app.use(cookieParser());
 app.use('/api/user', users);
 app.use('/api/validate', validate)
 app.use("/api/products", products);
@@ -38,3 +40,4 @@ app.listen(port, err => {
 
 
 connectDB();
+

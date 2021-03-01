@@ -5,6 +5,7 @@ const config = require('config');
 const jwt = require('jsonwebtoken');
 const { productSchema } = require('./Product');
 const { reviewSchema } = require('./review');
+const { func } = require('joi');
 
 const userSchema = new mongoose.Schema({
     name: { type: String, required: true, minlength: 5, maxlength: 50},
@@ -32,6 +33,24 @@ function validateUser(user){
     return schema.validate(user);
 
 }
+
+userSchema.methods.comparePasswrd = function comparePassword(password, passwordMatch) {
+    bcrypt.compare(password, this.password, passwordMatch)
+}
+
+// passwordMatch is my callback
+
+userSchema.statics.findByToken = function (token, cb) {
+    let user = this;
+
+    jwt.verify(token, 'secret', function (err, decode) {
+        user.findOne({ "_id": decode, "token": token }, function (err, user) {
+            if (err) return cb(err);
+            cb(null, user);
+        });
+    });
+}
+
 
 exports.User = User;
 exports.validateUser = validateUser;

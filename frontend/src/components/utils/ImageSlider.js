@@ -17,4 +17,4 @@ function ImageSlider(props) {
     )
 }
 
-export default ImageSlider
+export default ImageSlider;

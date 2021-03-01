@@ -35,7 +35,7 @@ router.post("/uploadImage", auth, (req, res) => {
 
 });
 
-//saving data that we got from the client to the DB
+//saving data the we got from the client to the DB
 router.post("/uploadProduct", auth, (req, res) => {
     const product = new Product(req.body)
 
