@@ -1,63 +1,11 @@
-const { User, userSchema, user, validateUser } = require("../models/user.js");
-const bcrypt = require("bcrypt");
-const config = require("config");
-const jwt = require("jsonwebtoken");
-const auth = require("../middleware/auth");
 const express = require("express");
 const router = express.Router();
+const { User } = require("../models/User");
+const { Product } = require("../models/Product");
+const { auth } = require("../middleware/auth");
+const { Payment } = require("../models/Payment");
 
-//get users
-router.get("/", async (req, res) => {
-  try {
-    const users = await User.find();
-    return res.send(users);
-  } catch (ex) {
-    return res.status(500).send(`Internal server Error: ${ex}`);
-  }
-});
-
-//get a user
-router.get("/:userId", async (req, res) => {
-  try {
-    const user = await User.findById(req.params.userId);
-    return res.send(user);
-  } catch (ex) {
-    return res.status(500).send(`Internal server Error: ${ex}`);
-  }
-});
-
-//new user
-router.post("/register", async (req, res) => {
-  try {
-    const { error } = validateUser(req.body);
-
-    if (error) return res.status(500).send(error.details[0].message);
-
-    let user = await User.findOne({ email: req.body.email });
-    if (user) return res.status(400).send("User already registered.");
-
-    const salt = await bcrypt.genSalt(10);
-    user = new User({
-      name: req.body.name,
-      email: req.body.email,
-      password: await bcrypt.hash(req.body.password, salt),
-    });
-
-    await user.save();
-
-    const token = jwt.sign(
-      { _id: user._id, name: user.name },
-      config.get("jwtSecret")
-    );
-
-    return res
-      .header("x-auth-token", token)
-      .header("access-control-expose-headers", "x-auth-token")
-      .send({ _id: user._id, name: user.name, email: user.email });
-  } catch (ex) {
-    return res.status(500).send(`InternalServerError:${ex}`);
-  }
-});
+const async = require("async");
 
 router.get("/auth", auth, (req, res) => {
   res.status(200).json({
@@ -66,26 +14,34 @@ router.get("/auth", auth, (req, res) => {
     isAuth: true,
     email: req.user.email,
     name: req.user.name,
-    role: req.user.role,
     image: req.user.image,
     cart: req.user.cart,
     history: req.user.history,
   });
 });
 
+router.post("/register", (req, res) => {
+  const user = new User(req.body);
+
+  user.save((err, doc) => {
+    if (err) return res.json({ success: false, err });
+    return res.status(200).json({
+      success: true,
+    });
+  });
+});
+
 router.post("/login", (req, res) => {
-  User.findOne({ email: req.body.email }, (err, user)=> {
+  User.findOne({ email: req.body.email }, (err, user) => {
     if (!user)
       return res.json({
         loginSuccess: false,
         message: "Auth failed, email not found",
       });
-    });
-  });
-    
+
     user.comparePassword(req.body.password, (err, isMatch) => {
       if (!isMatch)
-        return res.json({ loginSuccess: false, message: "Wrong password" });   
+        return res.json({ loginSuccess: false, message: "Wrong password" });
 
       user.generateToken((err, user) => {
         if (err) return res.status(400).send(err);
@@ -96,6 +52,8 @@ router.post("/login", (req, res) => {
         });
       });
     });
+  });
+});
 
 router.get("/logout", auth, (req, res) => {
   User.findOneAndUpdate(
@@ -109,7 +67,6 @@ router.get("/logout", auth, (req, res) => {
     }
   );
 });
-
 
 router.get("/addToCart", auth, (req, res) => {
   User.findOne({ _id: req.user._id }, (err, userInfo) => {
@@ -200,7 +157,6 @@ router.post("/successBuy", auth, (req, res) => {
   let history = [];
   let transactionData = {};
 
-  //payment information into collection
   req.body.cartDetail.forEach((item) => {
     history.push({
       dateOfPurchase: Date.now(),
@@ -212,11 +168,9 @@ router.post("/successBuy", auth, (req, res) => {
     });
   });
 
-  //payment information from paypal into collection
   transactionData.user = {
     id: req.user._id,
     name: req.user.name,
-    lastname: req.user.lastname,
     email: req.user.email,
   };
 
@@ -233,7 +187,6 @@ router.post("/successBuy", auth, (req, res) => {
       const payment = new Payment(transactionData);
       payment.save((err, doc) => {
         if (err) return res.json({ success: false, err });
-
         let products = [];
         doc.product.forEach((item) => {
           products.push({ id: item.id, quantity: item.quantity });
@@ -276,4 +229,3 @@ router.get("/getHistory", auth, (req, res) => {
 });
 
 module.exports = router;
-

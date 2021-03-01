@@ -1,57 +1,107 @@
-const mongoose = require('mongoose');
-const Joi = require('joi');
-const cors = require('cors');
-const config = require('config');
-const jwt = require('jsonwebtoken');
-const { productSchema } = require('./Product');
-const { reviewSchema } = require('./review');
-const { func } = require('joi');
+const mongoose = require("mongoose");
+const bcrypt = require("bcrypt");
+const saltRounds = 10;
+const jwt = require("jsonwebtoken");
+const moment = require("moment");
+const Joi = require("joi");
+const config = require("config");
+const cors = require("cors");
 
-const userSchema = new mongoose.Schema({
-    name: { type: String, required: true, minlength: 5, maxlength: 50},
-    email: {type: String, unique: true, required: true, minlength: 5, maxlength: 255},
-    password: {type: String, required: true, maxlength: 1024, minlength: 5},
-    timestamp: { type: Date, default: Date.now() },
-    cart: {type: [productSchema], default: []},
-    newSalePost: {type: [productSchema], default: []},
-    review: {type: [reviewSchema], default: []},
-    image: {type: String, required: true}
+const userSchema = mongoose.Schema({
+  name: {
+    type: String,
+    maxlength: 50,
+  },
+  email: {
+    type: String,
+    trim: true,
+    unique: 1,
+  },
+  password: {
+    type: String,
+    minlength: 5,
+  },
+  cart: {
+    type: Array,
+    default: [],
+  },
+  history: {
+    type: Array,
+    default: [],
+  },
+  image: String,
+  token: {
+    type: String,
+  },
+  tokenExp: {
+    type: Number,
+  },
 });
 
-const User = mongoose.model('User', userSchema);
+userSchema.pre("save", function (next) {
+  var user = this;
 
-userSchema.methods.generateAuthToken = function () {
-    return jwt.sign({_id: this._id, name: this.name, isAdmin: this.isAdmin}, config.get('jwtSecret'));
+  if (user.isModified("password")) {
+    console.log("password changed");
+    bcrypt.genSalt(saltRounds, function (err, salt) {
+      if (err) return next(err);
+
+      bcrypt.hash(user.password, salt, function (err, hash) {
+        if (err) return next(err);
+        user.password = hash;
+        next();
+      });
+    });
+  } else {
+    next();
+  }
+});
+
+userSchema.methods.comparePassword = function (plainPassword, cb) {
+  bcrypt.compare(plainPassword, this.password, function (err, isMatch) {
+    if (err) return cb(err);
+    cb(null, isMatch);
+  });
 };
 
-function validateUser(user){
-    const schema = Joi.object({
-        name: Joi.string().min(5).max(50).required(),
-        email: Joi.string().min(5).max(255).required().email(),
-        password: Joi.string().min(5).max(1024).required(),
-    });
-    return schema.validate(user);
+userSchema.methods.generateToken = function (cb) {
+  var user = this;
+  var token = jwt.sign(user._id.toHexString(), "secret");
+  var oneHour = moment().add(1, "hour").valueOf();
 
-}
-
-userSchema.methods.comparePasswrd = function comparePassword(password, passwordMatch) {
-    bcrypt.compare(password, this.password, passwordMatch)
-}
-
-// passwordMatch is my callback
+  user.tokenExp = oneHour;
+  user.token = token;
+  user.save(function (err, user) {
+    if (err) return cb(err);
+    cb(null, user);
+  });
+};
 
 userSchema.statics.findByToken = function (token, cb) {
-    let user = this;
+  var user = this;
 
-    jwt.verify(token, 'secret', function (err, decode) {
-        user.findOne({ "_id": decode, "token": token }, function (err, user) {
-            if (err) return cb(err);
-            cb(null, user);
-        });
+  jwt.verify(token, "secret", function (err, decode) {
+    user.findOne({ _id: decode, token: token }, function (err, user) {
+      if (err) return cb(err);
+      cb(null, user);
     });
+  });
+};
+
+const User = mongoose.model("User", userSchema);
+
+function validateUser(user) {
+  const schema = Joi.object({
+    name: Joi.string().max(50),
+    email: Joi.string().trim().unique(),
+    password: Joi.string().min(5),
+    cart: Joi.array(),
+    history: Joi.array(),
+    image: Joi.string(),
+  });
+  return schema.validate(user);
 }
 
-
+exports.userSchema = userSchema;
 exports.User = User;
 exports.validateUser = validateUser;
-exports.userSchema = userSchema;
