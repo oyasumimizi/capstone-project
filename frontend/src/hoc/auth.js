@@ -25,7 +25,7 @@ export default function (ComposedClass, reload, adminRoute = null) {
                         }
                     }
                 }
-            })
+            });
             
         }, [dispatch, props.history, user.googleAuth])
 
