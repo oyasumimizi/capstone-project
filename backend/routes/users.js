@@ -1,9 +1,9 @@
 const express = require("express");
 const router = express.Router();
-const { User } = require("../models/User");
-const { Product } = require("../models/Product");
+const { User } = require("../models/user");
+const { Product } = require("../models/product");
 const { auth } = require("../middleware/auth");
-const { Payment } = require("../models/Payment");
+const { Payment } = require("../models/payment");
 
 const async = require("async");
 

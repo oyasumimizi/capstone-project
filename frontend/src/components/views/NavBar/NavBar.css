@@ -9,7 +9,7 @@
 }
 
 .menu__logo {
-  width: 150px;
+  width: 300px;
   float: left;
 }
 
@@ -49,7 +49,7 @@
   height: 32px;
   padding: 6px;
   margin-top: 8px;
-  display: none !important; /* use of important to overwrite ant-btn */
+  display: none !important; /* use important to overwrite ant-btn */
   background: #3e91f7;
 }
 
@@ -57,7 +57,7 @@
   padding: 0 !important;
 }
 
-/* align header of Drawer with header of page */
+/* align header */
 .menu_drawer .ant-drawer-header {
   padding: 14px 24px !important;
 }

@@ -4,6 +4,7 @@ import { Formik } from "formik";
 import * as Yup from "yup";
 import { registerUser } from "../../../_actions/user_actions";
 import { useDispatch } from "react-redux";
+
 import { Form, Input, Button } from "antd";
 
 const formItemLayout = {
@@ -42,6 +43,7 @@ function RegisterPage(props) {
       }}
       validationSchema={Yup.object().shape({
         name: Yup.string().required("Name is required"),
+        lastName: Yup.string().required("Last Name is required"),
         email: Yup.string()
           .email("Email is invalid")
           .required("Email is required"),
@@ -110,6 +112,25 @@ function RegisterPage(props) {
                 />
                 {errors.name && touched.name && (
                   <div className="input-feedback">{errors.name}</div>
+                )}
+              </Form.Item>
+
+              <Form.Item required label="Last Name">
+                <Input
+                  id="lastName"
+                  placeholder="Enter your Last Name"
+                  type="text"
+                  value={values.lastName}
+                  onChange={handleChange}
+                  onBlur={handleBlur}
+                  className={
+                    errors.lastName && touched.lastName
+                      ? "text-input error"
+                      : "text-input"
+                  }
+                />
+                {errors.lastName && touched.lastName && (
+                  <div className="input-feedback">{errors.lastName}</div>
                 )}
               </Form.Item>
 

@@ -6,10 +6,21 @@ import FileUpload from "../../utils/FileUpload";
 const { Title } = Typography;
 const { TextArea } = Input;
 
+const Arts = [
+  { key: 1, value: "Original Art" },
+  { key: 2, value: "Photography" },
+  { key: 3, value: "Black n' White Art" },
+  { key: 4, value: "Anime Style Art" },
+  { key: 5, value: "Art Products" },
+  { key: 6, value: "Manga Style Art" },
+  { key: 7, value: "Newest Art in Stock" },
+];
+
 export class UploadProductPage extends Component {
   state = {
     title: "",
     description: "",
+    arts: 1,
     images: [],
     price: 0,
   };
@@ -23,23 +34,29 @@ export class UploadProductPage extends Component {
   };
 
   handleChangeDecsription = (event) => {
+    // console.log(event.currentTarget.value)
     this.setState({ description: event.currentTarget.value });
+  };
+
+  handleChangeArts = (event) => {
+    this.setState({ arts: event.currentTarget.value });
   };
 
   onSubmit = (event) => {
     event.preventDefault();
 
     if (this.props.user.userData && !this.props.user.userData.isAuth) {
-      return alert("Please login first.");
+      return alert("Please Log in first");
     }
 
     if (
       !this.state.title ||
       !this.state.description ||
+      !this.state.arts ||
       !this.state.images ||
       !this.state.price
     ) {
-      return alert("You are missing information in one of the fields.");
+      return alert("Please fill in all of the forms first.");
     }
 
     const variables = {
@@ -47,17 +64,18 @@ export class UploadProductPage extends Component {
       title: this.state.title,
       description: this.state.description,
       images: this.state.images,
+      arts: this.state.arts,
       price: this.state.price,
     };
 
     axios.post("/api/product/uploadProduct", variables).then((response) => {
       if (response.data.success) {
-        alert("Photo uploaded successfully.");
+        alert("Product uploaded successfully");
         setTimeout(() => {
           this.props.history.push("/");
         }, 1000);
       } else {
-        alert("Failed to upload photo.");
+        alert("Failed to upload product");
       }
     });
   };
@@ -70,7 +88,7 @@ export class UploadProductPage extends Component {
     return (
       <div style={{ maxWidth: "700px", margin: "2rem auto" }}>
         <div style={{ textAlign: "center", marginBottom: "2rem" }}>
-          <Title level={2}> Choose a picture to upload</Title>
+          <Title level={2}> Upload Travel Product</Title>
         </div>
 
         <Form onSubmit={this.onSubmit}>
@@ -97,6 +115,13 @@ export class UploadProductPage extends Component {
           />
           <br />
           <br />
+          <select onChange={this.handleChangeArts}>
+            {Arts.map((item) => (
+              <option key={item.key} value={item.key}>
+                {item.value}
+              </option>
+            ))}
+          </select>
           <br />
           <br />
 

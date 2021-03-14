@@ -22,7 +22,7 @@ function RightMenu(props) {
     return (
       <Menu mode={props.mode}>
         <Menu.Item key="mail">
-          <a href="/login">Signin</a>
+          <a href="/login">Sign in</a>
         </Menu.Item>
         <Menu.Item key="app">
           <a href="/register">Signup</a>

@@ -4,7 +4,7 @@ import { Icon, Col, Card, Row } from "antd";
 import ImageSlider from "../../utils/ImageSlider";
 import CheckBox from "./Sections/CheckBox";
 import RadioBox from "./Sections/RadioBox";
-import { price, art } from "./Sections/Datas";
+import { arts, price } from "./Sections/Datas";
 import SearchFeature from "./Sections/SearchFeature";
 
 const { Meta } = Card;
@@ -17,7 +17,7 @@ function LandingPage() {
   const [SearchTerms, setSearchTerms] = useState("");
 
   const [Filters, setFilters] = useState({
-    art: [],
+    arts: [],
     price: [],
   });
 
@@ -40,7 +40,7 @@ function LandingPage() {
         }
         setPostSize(response.data.postSize);
       } else {
-        alert("Failed to fectch product data");
+        alert("Failed to fectch product data.");
       }
     });
   };
@@ -135,14 +135,18 @@ function LandingPage() {
       <div style={{ textAlign: "center" }}>
         <h2>
           {" "}
-         <Icon type="rocket" />{" "}
+          Buy art here! <Icon type="heart" />{" "}
         </h2>
       </div>
 
-      {/* Filter by price is intended. */}
+      {/* Filter  */}
 
       <Row gutter={[16, 16]}>
-        <Col lg={12} xs={24}></Col>
+        <Col lg={12} xs={24}>
+          <CheckBox
+            handleFilters={(filters) => handleFilters(filters, "arts")}
+          />
+        </Col>
         <Col lg={12} xs={24}>
           <RadioBox
             list={price}

@@ -16,7 +16,7 @@ const price = [
   },
 ];
 
-const art = [
+const arts = [
   {
     _id: 1,
     name: "Landscape",
@@ -39,4 +39,4 @@ const art = [
   },
 ];
 
-export { price, art };
+export { price, arts };
