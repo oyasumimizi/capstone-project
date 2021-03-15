@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 
 function UserCardBlock(props) {
   const renderCartImage = (images) => {
@@ -14,15 +14,15 @@ function UserCardBlock(props) {
       <tr key={product._id}>
         <td>
           <img
-            style={{ width: "70px" }}
-            alt="product"
+            style={{ width: '70px' }}
+            alt='product'
             src={renderCartImage(product.images)}
           />
         </td>
         <td>{product.quantity} EA</td>
         <td>$ {product.price} </td>
         <td>
-          <button onClick={() => props.removeItem(product._id)}>Remove </button>{" "}
+          <button onClick={() => props.removeItem(product._id)}>Remove </button>{' '}
         </td>
       </tr>
     ));

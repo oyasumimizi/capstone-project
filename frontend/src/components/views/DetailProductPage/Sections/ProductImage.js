@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import ImageGallery from "react-image-gallery";
+import React, { useEffect, useState } from 'react';
+import ImageGallery from 'react-image-gallery';
 
 function ProductImage(props) {
   const [Images, setImages] = useState([]);
