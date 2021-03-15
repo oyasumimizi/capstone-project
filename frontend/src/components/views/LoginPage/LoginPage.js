@@ -6,6 +6,7 @@ import * as Yup from 'yup';
 import { Form, Icon, Input, Button, Checkbox, Typography } from 'antd';
 import { useDispatch } from 'react-redux';
 
+
 const { Title } = Typography;
 
 function LoginPage(props) {
@@ -44,9 +45,7 @@ function LoginPage(props) {
             email: values.email,
             password: values.password,
           };
-
-          dispatch(loginUser(dataToSubmit))
-            .then((response) => {
+          dispatch(loginUser(dataToSubmit)).then((response) => {
               if (response.payload.loginSuccess) {
                 window.localStorage.setItem('userId', response.payload.userId);
                 if (rememberMe === true) {
@@ -58,8 +57,7 @@ function LoginPage(props) {
               } else {
                 setFormErrorMessage('Incorrect e-mail or password.');
               }
-            })
-            .catch((err) => {
+            }).catch((err) => {
               setFormErrorMessage('Incorrect e-mail or password');
               setTimeout(() => {
                 setFormErrorMessage('');
@@ -104,7 +102,9 @@ function LoginPage(props) {
                 />
                 {errors.email && touched.email && (
                   <div className='input-feedback'>{errors.email}</div>
-                )}
+     
+     
+     )}
               </Form.Item>
 
               <Form.Item required>
@@ -166,6 +166,7 @@ function LoginPage(props) {
                     htmlType='submit'
                     className='login-form-button'
                     style={{ minWidth: '100%' }}
+                    value={values.Button}
                     disabled={isSubmitting}
                     onSubmit={handleSubmit}
                   >

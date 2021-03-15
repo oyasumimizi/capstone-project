@@ -6,6 +6,7 @@ import { registerUser } from '../../../_actions/user_actions';
 import { useDispatch } from 'react-redux';
 
 import { Form, Input, Button } from 'antd';
+import CORS from 'cors';
 
 const formItemLayout = {
   labelCol: {
